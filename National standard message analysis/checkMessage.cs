@@ -1636,7 +1636,7 @@ namespace Message_analysis_by_Elfran
 
                                         default:
 
-                                            details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1);
+                                            details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1-1000);
                                             break;
 
                                     }
