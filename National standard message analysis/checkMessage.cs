@@ -729,7 +729,7 @@ namespace Message_analysis_by_Elfran
 
                                         default:
 
-                                            details = Convert.ToString(Convert.ToInt32(variable, 16) - 20000);
+                                            details = Convert.ToString(Convert.ToInt32(variable, 16) *0.1- 2000);
                                             break;
 
                                     }
