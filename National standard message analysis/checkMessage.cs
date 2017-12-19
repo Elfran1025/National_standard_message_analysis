@@ -1182,8 +1182,10 @@ namespace Message_analysis_by_Elfran
                                         details += "\r\n位置： " + s;
                                         break;
                                 }
-                                details += Convert.ToString(Convert.ToInt32(b[++s] + b[++s] + b[++s] + b[++s], 16));
-                                msg += "\r\n精度：\t\t" + details;
+                                double longitude = Convert.ToInt32(b[++s] + b[++s] + b[++s] + b[++s], 16)*0.000001;
+                                details += Convert.ToString(longitude);
+                                
+                                msg += "\r\n经度：\t\t" + details;
 
                                 switch (temp.ElementAt(1))
                                 {
@@ -1198,7 +1200,8 @@ namespace Message_analysis_by_Elfran
                                         details += "\r\n位置： " + s;
                                         break;
                                 }
-                                details += Convert.ToString(Convert.ToInt32(b[++s] + b[++s] + b[++s] + b[++s], 16));
+                                double latitude= Convert.ToInt32(b[++s] + b[++s] + b[++s] + b[++s], 16) * 0.000001;
+                                details += Convert.ToString(latitude);
                                 msg += "\r\n纬度：\t\t" + details;
                                 #endregion
                                 //msg += "\r\n位置： " + s;
@@ -1709,7 +1712,7 @@ namespace Message_analysis_by_Elfran
                                     }
 
                                 }
-
+                                msg += "位置" + s;
                                 break;
 
 
