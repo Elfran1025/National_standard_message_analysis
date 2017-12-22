@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{94C2E338-5B25-4167-9266-12335E9EE59E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Message_analysis_by_Elfran</RootNamespace>
-    <AssemblyName>Message_analysis_by_Elfran</AssemblyName>
+    <RootNamespace>checkMessage_by_Elfran</RootNamespace>
+    <AssemblyName>checkMessage_by_Elfran</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
