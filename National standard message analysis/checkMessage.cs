@@ -1627,89 +1627,11 @@ namespace Message_analysis_by_Elfran
                                 {
                                     for (int i = 0; i < b08; i++)
                                     {
-                                        details = Convert.ToString(Convert.ToInt32(b[++s], 16));
-                                        msg += "\r\n可充电储能子系统号：\t" + details;
-
-                                        variable = b[++s] + b[++s];
-                                        //variable = variable.ToUpper();
-                                        switch (variable)
+                                        try
                                         {
-                                            case ("FFFE"):
-                                                details = "异常";
+                                            details = Convert.ToString(Convert.ToInt32(b[++s], 16));
+                                            msg += "\r\n可充电储能子系统号：\t" + details;
 
-                                                break;
-                                            case ("FFFF"):
-                                                details = "无效";
-                                                break;
-
-
-                                            default:
-
-                                                details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1);
-                                                break;
-
-                                        }
-
-
-
-                                        msg += "\r\n可充电储能装置电压：\t" + details;
-
-                                        variable = b[++s] + b[++s];
-                                        //variable = variable.ToUpper();
-                                        switch (variable)
-                                        {
-                                            case ("FFFE"):
-                                                details = "异常";
-
-                                                break;
-                                            case ("FFFF"):
-                                                details = "无效";
-                                                break;
-
-
-                                            default:
-
-                                                details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1 - 1000);
-                                                break;
-
-                                        }
-                                        msg += "\r\n可充电储能装置电流：\t" + details;
-
-
-                                        variable = b[++s] + b[++s];
-                                        //variable = variable.ToUpper();
-                                        switch (variable)
-                                        {
-                                            case ("FFFE"):
-                                                details = "异常";
-
-                                                break;
-                                            case ("FFFF"):
-                                                details = "无效";
-                                                break;
-
-
-                                            default:
-
-                                                details = Convert.ToString(Convert.ToInt32(variable, 16));
-                                                break;
-
-                                        }
-
-                                        msg += "\r\n单体电池总数：\t\t" + details;
-
-                                        int b801 = Convert.ToInt32(b[++s] + b[++s], 16);
-                                        details = Convert.ToString(b801);
-                                        msg += "\r\n本帧起始电池序号：\t\t" + details;
-
-                                        int b8 = Convert.ToInt32(b[++s], 16);
-                                        details = Convert.ToString(b8);
-                                        msg += "\r\n本帧单体电池总数：\t\t" + details;
-                                        msg += "\r\n";
-                                        num = "";
-                                        msg += "\t\t         单体电池电压\r\n";
-                                        for (int k = 0; k < b8; k++)
-                                        {
                                             variable = b[++s] + b[++s];
                                             //variable = variable.ToUpper();
                                             switch (variable)
@@ -1725,22 +1647,119 @@ namespace Message_analysis_by_Elfran
 
                                                 default:
 
-                                                    details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.001).PadRight(5, '0');
+                                                    details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1);
                                                     break;
 
                                             }
 
-                                            num = (b801++).ToString().PadLeft(3, '0');
-                                            msg += ("电压" + num + "：" + details) + "\t";
-                                            if ((k + 1) % 3 == 0 && (k + 1 != b8))
-                                            {
 
-                                                msg += "\r\n";
+
+                                            msg += "\r\n可充电储能装置电压：\t" + details;
+
+                                            variable = b[++s] + b[++s];
+                                            //variable = variable.ToUpper();
+                                            switch (variable)
+                                            {
+                                                case ("FFFE"):
+                                                    details = "异常";
+
+                                                    break;
+                                                case ("FFFF"):
+                                                    details = "无效";
+                                                    break;
+
+
+                                                default:
+
+                                                    details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1 - 1000);
+                                                    break;
+
+                                            }
+                                            msg += "\r\n可充电储能装置电流：\t" + details;
+
+
+                                            variable = b[++s] + b[++s];
+                                            //variable = variable.ToUpper();
+                                            switch (variable)
+                                            {
+                                                case ("FFFE"):
+                                                    details = "异常";
+
+                                                    break;
+                                                case ("FFFF"):
+                                                    details = "无效";
+                                                    break;
+
+
+                                                default:
+
+                                                    details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                                    break;
+
                                             }
 
+                                            msg += "\r\n单体电池总数：\t\t" + details;
+
+                                            int b801 = Convert.ToInt32(b[++s] + b[++s], 16);
+                                            details = Convert.ToString(b801);
+                                            msg += "\r\n本帧起始电池序号：\t\t" + details;
+
+                                            int b8 = Convert.ToInt32(b[++s], 16);
+                                            details = Convert.ToString(b8);
+                                            msg += "\r\n本帧单体电池总数：\t\t" + details;
+                                            msg += "\r\n";
+                                            num = "";
+                                            msg += "\t\t         单体电池电压\r\n";
+                                            for (int k = 0; k < b8; k++)
+                                            {
+                                                try
+                                                {
+
+                                                    variable = b[++s] + b[++s];
+                                                    //variable = variable.ToUpper();
+                                                    switch (variable)
+                                                    {
+                                                        case ("FFFE"):
+                                                            details = "异常";
+
+                                                            break;
+                                                        case ("FFFF"):
+                                                            details = "无效";
+                                                            break;
+
+
+                                                        default:
+
+                                                            details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.001).PadRight(5, '0');
+                                                            break;
+
+                                                    }
+
+                                                    num = (b801++).ToString().PadLeft(3, '0');
+                                                    msg += ("电压" + num + "：" + details) + "\t";
+                                                    if ((k + 1) % 3 == 0 && (k + 1 != b8))
+                                                    {
+
+                                                        msg += "\r\n";
+                                                    }
+
+                                                }
+                                                catch {
+
+                                                    msg += "\r\n解析错误，本帧单体电池总数多于实际数据";
+                                                    break;
+                                                }
+
+
+                                            }
 
                                         }
+                                        catch {
 
+                                            msg += "\r\n解析错误，可充电储能子系统个数多于实际数据";
+                                            break;
+                                        }
+                                 
                                     }
 
 
@@ -1782,47 +1801,64 @@ namespace Message_analysis_by_Elfran
                                 else {
                                     for (int i = 0; i < b09; i++)
                                     {
-                                        details = Convert.ToString(Convert.ToInt32(b[++s], 16));
-                                        msg += "\r\n可充电储能子系统号：\t" + details;
+                                        try {
+                                            details = Convert.ToString(Convert.ToInt32(b[++s], 16));
+                                            msg += "\r\n可充电储能子系统号：\t" + details;
 
-                                        int b9 = Convert.ToInt32(b[++s] + b[++s], 16);
-                                        details = Convert.ToString(b9);
-                                        msg += "\r\n可充电储能温度探针个数：\t" + details;
-                                        msg += "\r\n";
-                                        msg += "\t\t         单体温度\r\n";
-                                        for (int k = 0; k < b9; k++)
-                                        {
-                                            variable = b[++s];
-                                            //variable = variable.ToUpper();
-                                            switch (variable)
+                                            int b9 = Convert.ToInt32(b[++s] + b[++s], 16);
+                                            details = Convert.ToString(b9);
+                                            msg += "\r\n可充电储能温度探针个数：\t" + details;
+                                            msg += "\r\n";
+                                            msg += "\t\t         单体温度\r\n";
+                                            for (int k = 0; k < b9; k++)
                                             {
-                                                case ("FE"):
-                                                    details = "异常";
+                                                try
+                                                {
+                                                    variable = b[++s];
+                                                    //variable = variable.ToUpper();
+                                                    switch (variable)
+                                                    {
+                                                        case ("FE"):
+                                                            details = "异常";
 
+                                                            break;
+                                                        case ("FF"):
+                                                            details = "无效";
+                                                            break;
+
+
+                                                        default:
+
+                                                            details = Convert.ToString(Convert.ToInt32(variable, 16) - 40);
+                                                            break;
+
+                                                    }
+
+                                                    num = (k + 1).ToString().PadLeft(3, '0');
+                                                    msg += "温度" + num + "：" + details + "    ";
+                                                    if ((k + 1) % 4 == 0 && (k + 1) != b9)
+                                                    {
+
+                                                        msg += "\r\n";
+                                                    }
+
+
+                                                }
+                                                catch {
+                                                    msg += "\r\n解析错误，可充电储能温度探针个数多于实际数据";
                                                     break;
-                                                case ("FF"):
-                                                    details = "无效";
-                                                    break;
 
-
-                                                default:
-
-                                                    details = Convert.ToString(Convert.ToInt32(variable, 16) - 40);
-                                                    break;
+                                                }
 
                                             }
 
-                                            num = (k + 1).ToString().PadLeft(3, '0');
-                                            msg += "温度" + num + "：" + details + "    ";
-                                            if ((k + 1) % 4 == 0 && (k + 1) != b9)
-                                            {
-
-                                                msg += "\r\n";
-                                            }
 
 
                                         }
-
+                                        catch {
+                                            msg += "\r\n解析错误，可充电储能子系统个数多于实际数据";
+                                            break;
+                                        }
 
 
                                     }
@@ -1877,11 +1913,6 @@ namespace Message_analysis_by_Elfran
             }
             catch 
             {
-
-
-                //t += "\r\n位置：" + s + "\r\n异常：" + ex.Message;
-            }
-            finally {
                 int length = datalength + 24;
                 if (length == s - 1)
                 {
@@ -1901,10 +1932,15 @@ namespace Message_analysis_by_Elfran
                     t += "\r\n实际长度" + (s - 25);
 
 
-                  
-                
+
+
                     //t += "\r\n位置：" + s + "\r\n异常：" + ex.Message;
                 }
+
+                //t += "\r\n位置：" + s + "\r\n异常：" + ex.Message;
+            }
+            finally {
+
 
 
 
