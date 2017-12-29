@@ -1747,6 +1747,7 @@ namespace Message_analysis_by_Elfran
                                                 catch {
 
                                                     msg += "\r\n解析错误，本帧单体电池总数多于实际数据";
+                                                    msg += "\r\n位置：" + s ;
                                                     break;
                                                 }
 
@@ -1757,6 +1758,7 @@ namespace Message_analysis_by_Elfran
                                         catch {
 
                                             msg += "\r\n解析错误，可充电储能子系统个数多于实际数据";
+                                            msg += "\r\n位置：" + s;
                                             break;
                                         }
                                  
@@ -1846,6 +1848,7 @@ namespace Message_analysis_by_Elfran
                                                 }
                                                 catch {
                                                     msg += "\r\n解析错误，可充电储能温度探针个数多于实际数据";
+                                                    msg += "\r\n位置：" + s;
                                                     break;
 
                                                 }
@@ -1857,6 +1860,7 @@ namespace Message_analysis_by_Elfran
                                         }
                                         catch {
                                             msg += "\r\n解析错误，可充电储能子系统个数多于实际数据";
+                                            msg += "\r\n位置：" + s;
                                             break;
                                         }
 
@@ -1923,6 +1927,7 @@ namespace Message_analysis_by_Elfran
                     t += "\r\n实际长度小于数据单元长度";
                     t += "\r\n数据单元长度" + datalength;
                     t += "\r\n实际长度" + (s - 25);
+                    t += "\r\n位置：" + s;
                 }
 
                 else
@@ -1930,6 +1935,7 @@ namespace Message_analysis_by_Elfran
                     t += "\r\n实际长度大于数据单元长度";
                     t += "\r\n数据单元长度" + datalength;
                     t += "\r\n实际长度" + (s - 25);
+                    t += "\r\n位置：" + s;
 
 
 
@@ -1996,6 +2002,7 @@ namespace Message_analysis_by_Elfran
                     t += "\r\n实际长度小于数据单元长度";
                     t += "\r\n数据单元长度" + datalength;
                     t += "\r\n实际长度" + (s - 25);
+                    t += "\r\n位置：" + s;
                 }
 
                 else
@@ -2003,7 +2010,7 @@ namespace Message_analysis_by_Elfran
                     t += "\r\n实际长度大于数据单元长度";
                     t += "\r\n数据单元长度" + datalength;
                     t += "\r\n实际长度" + (s - 25);
-
+                    t += "\r\n位置：" + s;
 
 
 
@@ -2041,6 +2048,7 @@ namespace Message_analysis_by_Elfran
                     t += "\r\n实际长度小于数据单元长度";
                     t += "\r\n数据单元长度" + datalength;
                     t += "\r\n实际长度" + (s - 25);
+                    t += "\r\n位置：" + s;
                 }
 
                 else
@@ -2048,6 +2056,7 @@ namespace Message_analysis_by_Elfran
                     t += "\r\n实际长度大于数据单元长度";
                     t += "\r\n数据单元长度" + datalength;
                     t += "\r\n实际长度" + (s - 25);
+                    t += "\r\n位置：" + s;
 
 
 
@@ -2124,6 +2133,7 @@ namespace Message_analysis_by_Elfran
                     t += "\r\n实际长度小于数据单元长度";
                     t += "\r\n数据单元长度" + datalength;
                     t += "\r\n实际长度" + (s - 25);
+                    t += "\r\n位置：" + s;
                 }
 
                 else
@@ -2131,6 +2141,7 @@ namespace Message_analysis_by_Elfran
                     t += "\r\n实际长度大于数据单元长度";
                     t += "\r\n数据单元长度" + datalength;
                     t += "\r\n实际长度" + (s - 25);
+                    t += "\r\n位置：" + s;
 
 
 
