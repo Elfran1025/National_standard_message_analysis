@@ -413,7 +413,7 @@ namespace Message_analysis_by_Elfran
                                     default:
 
 
-                                        details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1);
+                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
                                         break;
 
                                 }
@@ -437,7 +437,7 @@ namespace Message_analysis_by_Elfran
                                     default:
 
 
-                                        details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1);
+                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
                                         break;
 
                                 }
@@ -459,7 +459,7 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-                                        details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1);
+                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
                                         break;
 
                                 }
@@ -480,8 +480,9 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-
-                                        details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1 - 1000);
+                                        Decimal d = Convert.ToDecimal(Convert.ToInt32(variable, 16));
+                                        //Decimal e = 0.1M;
+                                        details = Convert.ToString( d* 0.1M- 1000);
                                         break;
 
                                 }
@@ -741,7 +742,7 @@ namespace Message_analysis_by_Elfran
 
                                         default:
 
-                                            details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1 - 2000);
+                                            details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M - 2000);
                                             break;
 
                                     }
@@ -790,7 +791,7 @@ namespace Message_analysis_by_Elfran
                                         default:
 
 
-                                            details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1);
+                                            details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
                                             break;
 
                                     }
@@ -815,7 +816,7 @@ namespace Message_analysis_by_Elfran
 
 
 
-                                            details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1 - 1000);
+                                            details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M - 1000);
                                             break;
 
                                     }
@@ -849,7 +850,7 @@ namespace Message_analysis_by_Elfran
                                     default:
 
 
-                                        details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1);
+                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
                                         break;
 
                                 }
@@ -875,7 +876,7 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-                                        details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1);
+                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
                                         break;
 
                                 }
@@ -898,7 +899,7 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-                                        details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.01);
+                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.01M);
                                         break;
 
                                 }
@@ -931,7 +932,7 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-                                        details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1 - 40);
+                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M - 40);
                                         break;
 
                                 }
@@ -1027,7 +1028,7 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-                                        details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1);
+                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
                                         break;
 
                                 }
@@ -1147,7 +1148,7 @@ namespace Message_analysis_by_Elfran
                                     default:
 
 
-                                        details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.01);
+                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.01M);
                                         break;
 
                                 }
@@ -1285,7 +1286,7 @@ namespace Message_analysis_by_Elfran
                                     default:
 
 
-                                        details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.001);
+                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.001M);
                                         break;
 
                                 }
@@ -1348,7 +1349,7 @@ namespace Message_analysis_by_Elfran
                                     default:
 
 
-                                        details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.001);
+                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.001M);
                                         break;
 
                                 }
@@ -1647,7 +1648,7 @@ namespace Message_analysis_by_Elfran
 
                                                 default:
 
-                                                    details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1);
+                                                    details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
                                                     break;
 
                                             }
@@ -1671,7 +1672,7 @@ namespace Message_analysis_by_Elfran
 
                                                 default:
 
-                                                    details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.1 - 1000);
+                                                    details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M - 1000);
                                                     break;
 
                                             }
@@ -1730,7 +1731,7 @@ namespace Message_analysis_by_Elfran
 
                                                         default:
 
-                                                            details = Convert.ToString(Convert.ToSingle(Convert.ToInt32(variable, 16)) * 0.001).PadRight(5, '0');
+                                                            details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.001M).PadRight(5, '0');
                                                             break;
 
                                                     }
