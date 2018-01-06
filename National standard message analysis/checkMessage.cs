@@ -55,7 +55,7 @@ namespace Message_analysis_by_Elfran
         {
             String a = text.Replace("\r\n", null);
             a = a.Replace("\n", null);
-            //a = a.Replace("",null);
+            //a = a.Replace("-"," ");
             List<String> b = a.Split(' ').ToList();
             b.RemoveAll(it => it.Equals(""));
             Boolean count = false;

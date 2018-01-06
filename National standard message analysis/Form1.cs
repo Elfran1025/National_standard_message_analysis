@@ -28,7 +28,7 @@ namespace National_standard_message_analysis
                 string str = (String)iData.GetData(DataFormats.Text);
                 textBox1.Text = str;
             }
-            String txt = textBox1.Text;
+            String txt = textBox1.Text.Replace("-",null);
             string sourceText="";
             string resultText = "";
             checkMessage cm = new checkMessage();
@@ -88,6 +88,12 @@ namespace National_standard_message_analysis
             else {
                 button1.Text = "粘贴并解析";
             }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            this.linkLabel1.Links[0].LinkData = "https://github.com/Elfran1025/National_standard_message_analysis/releases";
+            System.Diagnostics.Process.Start(e.Link.LinkData.ToString());
         }
 
         //private void textBox1_Click(object sender, EventArgs e)
