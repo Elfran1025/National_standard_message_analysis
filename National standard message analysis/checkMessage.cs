@@ -1985,11 +1985,13 @@ namespace Message_analysis_by_Elfran
                 int m = Convert.ToInt32(b[++s], 16);
                 details = Convert.ToString(m);
                 t += "\r\n可充电储能系统编码长度：\t" + details;
+                details = "";
                 for (int i = 0; i < m * n; i++)
                 {
-                    details = Convert.ToString(Convert.ToInt32(b[++s], 16));
-                    t += "\r\n可充电储能系统编码：\t" + details;
+                    details += Convert.ToChar(Convert.ToByte(b[++s], 16));
+
                 }
+                t += "\r\n可充电储能系统编码：\t" + details;
             }
             catch (Exception ex)
             {
