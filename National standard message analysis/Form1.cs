@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -43,12 +44,6 @@ namespace National_standard_message_analysis
 
         //报文处理：字符串处理，将String转换为List
 
-        public int x01(int s,String msg) {
-
-
-
-            return s;
-        }
 
 
 
@@ -94,6 +89,13 @@ namespace National_standard_message_analysis
         {
             this.linkLabel1.Links[0].LinkData = "https://github.com/Elfran1025/National_standard_message_analysis/releases";
             System.Diagnostics.Process.Start(e.Link.LinkData.ToString());
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+           String version = "V" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            label4.Text = version;
+            this.Text += version;
         }
 
         //private void textBox1_Click(object sender, EventArgs e)
