@@ -67,6 +67,7 @@ namespace Message_analysis_by_Elfran
                     //c += b[i];
                     //c += '\n';
                     //i = i + 2;
+                    break;
                 }
                 if (count)
                 {
@@ -280,8 +281,10 @@ namespace Message_analysis_by_Elfran
             else
             {
                 c += "\r\n校验状态：" + "\t【失败】";
-                c += "\r\n原始校验码：" + "\t" + buff.Last();
-                c += "\r\n实际校验码：" + "\t" + check;
+                string str1 = Convert.ToString(buff.Last(),16).ToUpper();
+                c += "\r\n原始校验码：" + "\thex：" +str1+"\tbyte："+ buff.Last() ;
+                string str2 = Convert.ToString(check, 16).ToUpper();
+                c += "\r\n实际校验码：" + "\thex：" + str2+"\tbyte：" + check ;
 
             }
 
