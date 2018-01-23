@@ -36,7 +36,7 @@ namespace National_standard_message_analysis
             
             cm.Check(txt,out sourceText,out resultText);
         
-            textBox1.Text = sourceText;
+            textBox3.Text = sourceText;
             textBox2.Text = resultText+ "\r\n■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■\r\n" + textBox2.Text;
             //richTextBox1.Text = resultText + "\r\n■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■\r\n" + richTextBox1;
             //public string Replace(string oldValue, string newValue)
@@ -56,22 +56,23 @@ namespace National_standard_message_analysis
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            //int width = this.Width;
-            //int height = this.Height;
-            //textBox1.Width = width / 2 - 30;
+            int width = this.Width;
+            int height = this.Height;
+            textBox1.Width = width / 2 - 25;
+            textBox3.Width = textBox1.Width;
             //textBox1.Height = height - 115;
             //textBox2.Height = height - 115;
-            //textBox2.Width = width / 2 - 30;
-            //textBox2.Left = textBox1.Left + width / 2 - 15;
-            //label2.Left = textBox2.Left;
-            //button2.Left = textBox2.Left;
-            //button1.Left = textBox1.Right - 75;
+            textBox2.Width = width / 2 -30;
+            textBox2.Left = width / 2 ;
+            label2.Left = textBox2.Left;
+            button2.Left = textBox2.Left;
+            button1.Left = textBox1.Right - 75;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             textBox1.Clear();
-
+            textBox3.Clear();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -96,7 +97,9 @@ namespace National_standard_message_analysis
            String version = "V" + Assembly.GetExecutingAssembly().GetName().Version.ToString();
             label4.Text = version;
             this.Text += version;
+            //this.Form1_Resize(sender,e);
         }
+
 
         //private void textBox1_Click(object sender, EventArgs e)
         //{

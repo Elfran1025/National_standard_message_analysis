@@ -8,10 +8,13 @@ namespace Message_analysis_by_Elfran
     class checkMessage
     {
         static int datalength = 0;
+        static List<int> errorSite = new List<int>();
         public void Check(string txt, out string sourceText, out string resultText)
         {
+            errorSite.Clear();
             List<String> b = new List<string>();
-            sourceText = txt;
+            sourceText = "";
+
             txt = txt.ToUpper();
             resultText = "";
             if (txt.Contains("23"))
@@ -23,13 +26,13 @@ namespace Message_analysis_by_Elfran
                         txt = txt.Insert(i, " ");
                     }
                 }
-
+            
 
 
                 try
                 {
-                    b = Message_Processing(txt, out sourceText);
-                    resultText = Head_Analysis(b);
+                    b = Message_Processing(txt);
+                    resultText = Head_Analysis(b ,out sourceText);
                 }
                 catch (Exception ex)
                 {
@@ -44,14 +47,14 @@ namespace Message_analysis_by_Elfran
                 resultText = "报文中不含“23”，该报文格式不对，请检查后重试";
                 //MessageBox.Show("报文中不含“23”，该报文格式不对，请检查后重试");
             }
-
+            
 
 
 
         }
 
 
-        public List<String> Message_Processing(String text, out string sourceText)
+        public List<String> Message_Processing(String text)
         {
             String a = text.Replace("\r\n", null);
             a = a.Replace("\n", null);
@@ -92,35 +95,37 @@ namespace Message_analysis_by_Elfran
                 }
             }
             //String z = "【行号】";
-            String z = "";
-            string num = "";
-            for (int i = 0; i < b.Count; i++)
-            {
+            //String z = "";
+            //string num = "";
+            //for (int i = 0; i < b.Count; i++)
+            //{
                
-                if (i!=0&&i % 10 == 0)
-                {
-                    num = Convert.ToString((i / 10) + 1).PadLeft(3, '0');
-                    //if (i == 0) {
+            //    if (i!=0&&i % 10 == 0)
+            //    {
+            //        num = Convert.ToString((i / 10) + 1).PadLeft(3, '0');
+            //        //if (i == 0) {
 
-                    //    z = "【" + num + "】" + z;
-                    //}
+            //        //    z = "【" + num + "】" + z;
+            //        //}
                    
-                    //z += "\r\n"+"【"+num+"】";
-                    z += "\r\n";
-                }
-                z += (b[i] + " ");
-            }
-            sourceText = z;
+            //        //z += "\r\n"+"【"+num+"】";
+            //        z += "\r\n";
+            //    }
+            //    z += (b[i] + " ");
+            //}
+            //sourceText = z;
             return b;
         }
         //报头解析
-        public String Head_Analysis(List<String> b)
+        public String Head_Analysis(List<String> b,out String reStr)
         {
+            List<string> rlist = new List<string>();
             //MessageBox.Show(z);
             String c = "";
             String details = "";
             String t = "";
             int s = 2;
+            reStr = "";
             try
             {
 
@@ -135,11 +140,11 @@ namespace Message_analysis_by_Elfran
                         break;
                     case 0x02:
                         details = "实时信息上报";
-                        t = Information_Submission(b);
+                        t = Information_Submission(b,out reStr);
                         break;
                     case 0x03:
                         details = "补发信息上报";
-                        t = Information_Submission(b);
+                        t = Information_Submission(b, out reStr);
                         break;
                     case 0x04:
                         details = "车辆登出";
@@ -160,8 +165,8 @@ namespace Message_analysis_by_Elfran
                         details = "终端校时";
                         break;
                     default:
-                        details = "解析错误";
-                        details += "\r\n位置： " + s;
+                        details = analysisError(s,null);
+
                         break;
                 }
                 if (b00 >= 0x09 && b00 <= 0x7f)
@@ -197,8 +202,7 @@ namespace Message_analysis_by_Elfran
                         details = "命令";
                         break;
                     default:
-                        details = "解析错误";
-                        details += "\r\n位置： " + s;
+                        details = analysisError(s, null);
                         break;
                 }
                 c += "\r\n应答标识：\t" + details;
@@ -230,8 +234,7 @@ namespace Message_analysis_by_Elfran
                         details = "无效";
                         break;
                     default:
-                        details = "解析错误";
-                        details += "\r\n位置： " + s;
+                        details = analysisError(s, null);
                         break;
                 }
                 c += "\r\n加密方式：\t" + details;
@@ -287,16 +290,22 @@ namespace Message_analysis_by_Elfran
                 c += "\r\n实际校验码：" + "\thex：" + str2+"\tbyte：" + check ;
 
             }
-
+            String reHead = "";
+            reHead = "---------数据包头---------"+" "+24+"\r\n";
+            for (int i = 0; i <= 23; i++) {
+                reHead += b[i]+" ";
+            }
+            reStr = reHead +"\r\n"+ reStr;
             return c + t;
 
         }
         //信息上报
-        public String Information_Submission(List<String> b)
+        public String Information_Submission(List<String> b,out String reStr)
         {
+            reStr = "";
             String t = "";
             String details = "";
-
+            int x = 30;
 
 
 
@@ -309,6 +318,11 @@ namespace Message_analysis_by_Elfran
             try
             {
                 details = getTime(b);//获取时间
+                reStr += "---------数据采集时间---------" + 6+"\r\n";
+                for (int i = 24; i < 30; i++) {
+                    reStr += b[i]+" ";
+                }
+                reStr += "\r\n";
                 string variable = "";
                 String msg = "";
                 t += "\r\n数据采集时间：\t" + details;
@@ -344,8 +358,7 @@ namespace Message_analysis_by_Elfran
                                         details = "无效";
                                         break;
                                     default:
-                                        details = "解析错误";
-                                        details += "\r\n位置： " + s;
+                                        details = analysisError(s, null);
                                         break;
                                 }
                                 msg += "\r\n车辆状态：\t" + details;
@@ -371,8 +384,7 @@ namespace Message_analysis_by_Elfran
                                         details = "无效";
                                         break;
                                     default:
-                                        details = "解析错误";
-                                        details += "\r\n位置： " + s;
+                                        details = analysisError(s, null);
                                         break;
                                 }
                                 msg += "\r\n充电状态：\t" + details;
@@ -395,8 +407,7 @@ namespace Message_analysis_by_Elfran
                                         details = "无效";
                                         break;
                                     default:
-                                        details = "解析错误";
-                                        details += "\r\n位置： " + s;
+                                        details = analysisError(s, null);
                                         break;
                                 }
                                 msg += "\r\n运行模式：\t" + details;
@@ -485,7 +496,7 @@ namespace Message_analysis_by_Elfran
 
                                         Decimal d = Convert.ToDecimal(Convert.ToInt32(variable, 16));
                                         //Decimal e = 0.1M;
-                                        details = Convert.ToString( d* 0.1M- 1000);
+                                        details = Convert.ToString(d * 0.1M - 1000);
                                         break;
 
                                 }
@@ -529,8 +540,7 @@ namespace Message_analysis_by_Elfran
                                         details = "无效";
                                         break;
                                     default:
-                                        details = "解析错误";
-                                        details += "\r\n位置： " + s;
+                                        details = analysisError(s, null);
                                         break;
                                 }
                                 msg += "\r\nDC-DC状态：\t" + details;
@@ -552,8 +562,7 @@ namespace Message_analysis_by_Elfran
                                         details = "无制动力";
                                         break;
                                     default:
-                                        details = "解析错误";
-                                        details += "\r\n位置： " + s;
+                                        details = analysisError(s, null);
                                         break;
                                 }
                                 msg += "\r\n制动：\t\t" + details;
@@ -566,8 +575,7 @@ namespace Message_analysis_by_Elfran
                                         details = "无驱动力";
                                         break;
                                     default:
-                                        details = "解析错误";
-                                        details += "\r\n位置： " + s;
+                                        details = analysisError(s, null);
                                         break;
                                 }
                                 msg += "\r\n驱动：\t\t" + details;
@@ -595,8 +603,7 @@ namespace Message_analysis_by_Elfran
                                             details = "停车P挡";
                                             break;
                                         default:
-                                            details = "解析错误";
-                                            details += "\r\n位置： " + s;
+                                            details = analysisError(s, null);
                                             break;
                                     }
                                 }
@@ -683,8 +690,7 @@ namespace Message_analysis_by_Elfran
                                             details = "无效";
                                             break;
                                         default:
-                                            details = "解析错误";
-                                            details += "\r\n位置： " + s;
+                                            details = analysisError(s, null);
                                             break;
                                     }
                                     msg += "\r\n驱动电机状态：\t\t" + details;
@@ -704,6 +710,7 @@ namespace Message_analysis_by_Elfran
                                         default:
 
                                             details = Convert.ToString(Convert.ToInt32(variable, 16) - 40);
+
                                             break;
 
                                     }
@@ -1079,8 +1086,7 @@ namespace Message_analysis_by_Elfran
                                         details = "无效";
                                         break;
                                     default:
-                                        details = "解析错误";
-                                        details += "\r\n位置： " + s;
+                                        details = analysisError(s, null);
                                         break;
                                 }
                                 msg += "\r\n高压DC/DC状态：\t\t" + details;
@@ -1105,8 +1111,7 @@ namespace Message_analysis_by_Elfran
                                         details = "无效";
                                         break;
                                     default:
-                                        details = "解析错误";
-                                        details += "\r\n位置： " + s;
+                                        details = analysisError(s, null);
                                         break;
                                 }
                                 msg += "\r\n发动机状态：\t" + details;
@@ -1179,8 +1184,7 @@ namespace Message_analysis_by_Elfran
                                         details = "有效定位";
                                         break;
                                     default:
-                                        details = "解析错误";
-                                        details += "\r\n位置： " + s;
+                                        details = analysisError(s, null);
                                         break;
                                 }
                                 msg += "\r\n定位状态：\t" + details;
@@ -1194,8 +1198,8 @@ namespace Message_analysis_by_Elfran
                                         details = "西经";
                                         break;
                                     default:
-                                        details = "解析错误";
-                                        details += "\r\n位置： " + s;
+                                       details = analysisError(s,null);
+                                        
                                         break;
                                 }
                                 double longitude = Convert.ToInt32(b[++s] + b[++s] + b[++s] + b[++s], 16) * 0.000001;
@@ -1212,8 +1216,8 @@ namespace Message_analysis_by_Elfran
                                         details = "北纬";
                                         break;
                                     default:
-                                        details = "解析错误";
-                                        details += "\r\n位置： " + s;
+                                        details = analysisError(s,null);
+                                        
                                         break;
                                 }
                                 double latitude = Convert.ToInt32(b[++s] + b[++s] + b[++s] + b[++s], 16) * 0.000001;
@@ -1511,8 +1515,8 @@ namespace Message_analysis_by_Elfran
                                         details = "无效";
                                         break;
                                     default:
-                                        details = "解析错误";
-                                        details += "\r\n位置： " + s;
+                                           details = analysisError(s,null);
+                               
                                         break;
                                 }
                                 msg += "\r\n最高报警等级：\t\t" + details;
@@ -1537,8 +1541,8 @@ namespace Message_analysis_by_Elfran
                                             detail[31 - i] = "正常";
                                             break;
                                         default:
-                                            detail[31 - i] = "解析错误";
-                                            detail[i] += "\r\n位置： " + s;
+                                            detail[31 - i] = analysisError(s, null);
+                                       
                                             break;
                                     }
                                 }
@@ -1603,13 +1607,16 @@ namespace Message_analysis_by_Elfran
                                 //msg += "\r\n位置： " + s;
                                 break;
                             case 0x08:
+
+
+
                                 h = "可充电储能装置电压数据";
 
-
+                                #region MyRegion
 
 
                                 int b08 = Convert.ToInt32(b[++s], 16);
-                                
+
                                 if (b08 == 254)
                                 {
                                     details = "异常";
@@ -1749,9 +1756,9 @@ namespace Message_analysis_by_Elfran
 
                                                 }
                                                 catch {
-
-                                                    msg += "\r\n解析错误，本帧单体电池总数多于实际数据";
-                                                    msg += "\r\n位置：" + s ;
+                                                    msg +="\r\n"+ analysisError(s, "本帧单体电池总数多于实际数据");
+                                                    //msg += "\r\n解析错误，本帧单体电池总数多于实际数据";
+                                                    //msg += "\r\n位置：" + s;
                                                     break;
                                                 }
 
@@ -1760,17 +1767,17 @@ namespace Message_analysis_by_Elfran
 
                                         }
                                         catch {
-
-                                            msg += "\r\n解析错误，可充电储能子系统个数多于实际数据";
-                                            msg += "\r\n位置：" + s;
+                                            msg += "\r\n" + analysisError(s, "可充电储能子系统个数多于实际数据");
+                                            //msg += "\r\n解析错误，可充电储能子系统个数多于实际数据";
+                                            //msg += "\r\n位置：" + s;
                                             break;
                                         }
-                                 
+
                                     }
 
 
                                 }
-
+                                #endregion
 
                                 break;
 
@@ -1778,6 +1785,9 @@ namespace Message_analysis_by_Elfran
 
                             case 0x09:
                                 h = "可充电储能装置温度数据";
+                                #region MyRegion
+
+
                                 int b09 = Convert.ToInt32(b[++s], 16);
                                 if (b09 == 254)
                                 {
@@ -1851,8 +1861,9 @@ namespace Message_analysis_by_Elfran
 
                                                 }
                                                 catch {
-                                                    msg += "\r\n解析错误，可充电储能温度探针个数多于实际数据";
-                                                    msg += "\r\n位置：" + s;
+                                                    msg += "\r\n" + analysisError(s, "可充电储能温度探针个数多于实际数据");
+                                                    //msg += "\r\n解析错误，可充电储能温度探针个数多于实际数据";
+                                                    //msg += "\r\n位置：" + s;
                                                     break;
 
                                                 }
@@ -1863,8 +1874,9 @@ namespace Message_analysis_by_Elfran
 
                                         }
                                         catch {
-                                            msg += "\r\n解析错误，可充电储能子系统个数多于实际数据";
-                                            msg += "\r\n位置：" + s;
+                                            msg += "\r\n" + analysisError(s, "可充电储能子系统个数多于实际数据");
+                                            //msg += "\r\n解析错误，可充电储能子系统个数多于实际数据";
+                                            //msg += "\r\n位置：" + s;
                                             break;
                                         }
 
@@ -1873,6 +1885,8 @@ namespace Message_analysis_by_Elfran
 
 
                                 }
+                                #endregion
+
                                 break;
 
 
@@ -1884,6 +1898,7 @@ namespace Message_analysis_by_Elfran
                                 s = b.Count - 1;
                                 break;
                         }
+
 
                     }
 
@@ -1911,9 +1926,30 @@ namespace Message_analysis_by_Elfran
 
                     }
 
+                    reStr += "---------" + h + "--------- " + (s - x + 1) + "\r\n";
+
+                    for (int i = x; i <= s; i++)
+                    {
+                        if (errorSite.Contains(i))
+                        {
+                            reStr += "【" + b[i] + "】 ";
+
+                        }
+                        else
+                        {
+                            reStr += b[i] + " ";
+
+                        }
+
+
+                    }
+                    reStr += "\r\n";
+                    x = s + 1;
+
                     h = "\r\n信息类型标志：\t---------" + h + "---------";
 
                     t += h + msg;
+
                     //msg += h + t;
                 }
                 //details = b[++s];
@@ -2119,8 +2155,8 @@ namespace Message_analysis_by_Elfran
                         details = "无效";
                         break;
                     default:
-                        details = "解析错误";
-                        details += "\r\n位置： " + s;
+                           details = analysisError(s,null);
+ 
                         break;
                 }
                 t += "\r\n加密方式：\t" + details;
@@ -2218,6 +2254,13 @@ namespace Message_analysis_by_Elfran
                 value = (byte)(value ^ buffer[i]);
             }
             return value;
+        }
+        public string analysisError(int s,String detail) {
+
+            String str = "解析错误 "+detail;
+            str+= "\r\n位置： " + s;
+            errorSite.Add(s);
+            return str;
         }
     }
 }
