@@ -26,8 +26,8 @@ namespace Message_analysis_by_Elfran
                         txt = txt.Insert(i, " ");
                     }
                 }
-            
 
+                Console.WriteLine(txt);
 
                 try
                 {
@@ -315,6 +315,7 @@ namespace Message_analysis_by_Elfran
 
 
             //}
+            String msg = "";
             try
             {
                 details = getTime(b);//获取时间
@@ -324,7 +325,7 @@ namespace Message_analysis_by_Elfran
                 }
                 reStr += "\r\n";
                 string variable = "";
-                String msg = "";
+                
                 t += "\r\n数据采集时间：\t" + details;
                 for (s = 30; s < b.Count - 1; s++)
                 {
@@ -1957,6 +1958,37 @@ namespace Message_analysis_by_Elfran
             }
             catch 
             {
+
+
+
+
+
+
+                reStr += "---------" + h + "--------- " + (s - x + 1) + "\r\n";
+
+                for (int i = x; i < s; i++)
+                {
+                    if (errorSite.Contains(i))
+                    {
+                        reStr += "【" + b[i] + "】 ";
+
+                    }
+                    else
+                    {
+                        reStr += b[i] + " ";
+
+                    }
+
+
+                }
+                reStr += "\r\n";
+                x = s + 1;
+
+                h = "\r\n信息类型标志：\t---------" + h + "---------";
+
+                t += h + msg;
+
+
                 int length = datalength + 24;
                 if (length == s - 1)
                 {

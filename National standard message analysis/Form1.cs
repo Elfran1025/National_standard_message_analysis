@@ -60,13 +60,16 @@ namespace National_standard_message_analysis
             int height = this.Height;
             textBox1.Width = width / 2 - 25;
             textBox3.Width = textBox1.Width;
+            textBox2.Height = height - 112;
+            textBox3.Height = height - 255;
             //textBox1.Height = height - 115;
             //textBox2.Height = height - 115;
-            textBox2.Width = width / 2 -30;
-            textBox2.Left = width / 2 ;
+            textBox2.Width = width / 2 -25;
+            textBox2.Left = width / 2-3 ;
             label2.Left = textBox2.Left;
             button2.Left = textBox2.Left;
             button1.Left = textBox1.Right - 75;
+
         }
 
         private void button3_Click(object sender, EventArgs e)
