@@ -1928,8 +1928,11 @@ namespace Message_analysis_by_Elfran
                     }
 
                     reStr += "---------" + h + "--------- " + (s - x + 1) + "\r\n";
+                    if (s > b.Count()) {
 
-                    for (int i = x; i <= s; i++)
+                        s = b.Count();
+                    }
+                    for (int i = x; i < s; i++)
                     {
                         if (errorSite.Contains(i))
                         {
@@ -1956,20 +1959,21 @@ namespace Message_analysis_by_Elfran
                 //details = b[++s];
 
             }
-            catch 
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
 
 
 
 
 
+                reStr += "\r\n---------" + h + "--------- " + (s - x + 1) + "\r\n";
 
-                reStr += "---------" + h + "--------- " + (s - x + 1) + "\r\n";
-
-                for (int i = x; i < s; i++)
+                for (int i = x; i < b.Count(); i++)
                 {
                     if (errorSite.Contains(i))
                     {
+
                         reStr += "【" + b[i] + "】 ";
 
                     }
