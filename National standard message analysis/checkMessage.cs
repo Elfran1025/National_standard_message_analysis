@@ -1930,9 +1930,9 @@ namespace Message_analysis_by_Elfran
                     reStr += "---------" + h + "--------- " + (s - x + 1) + "\r\n";
                     if (s > b.Count()) {
 
-                        s = b.Count();
+                        s = b.Count()-1;
                     }
-                    for (int i = x; i < s; i++)
+                    for (int i = x; i <= s; i++)
                     {
                         if (errorSite.Contains(i))
                         {
