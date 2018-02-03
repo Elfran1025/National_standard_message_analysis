@@ -276,26 +276,72 @@ namespace Message_analysis_by_Elfran
             }
 
             byte check = GetBCC(buff, 2, buff.Length - 3);
-            if (buff.Last() == check)
+            try
             {
-                c += "\r\n校验状态：" + "\t【成功】";
+                if (buff[datalength + 24] == check)
+                {
+                    c += "\r\n校验状态：" + "\t【成功】";
+
+                }
+                else
+                {
+                    c += "\r\n校验状态：" + "\t【失败】";
+                    string str1 = Convert.ToString(buff[datalength + 24], 16).ToUpper();
+                    c += "\r\n原始校验码：" + "\thex：" + str1 + "\tbyte：" + buff.Last();
+                    string str2 = Convert.ToString(check, 16).ToUpper();
+                    c += "\r\n实际校验码：" + "\thex：" + str2 + "\tbyte：" + check;
+                    errorSite.Add(datalength + 24);
+                }
 
             }
-            else
-            {
+            catch {
                 c += "\r\n校验状态：" + "\t【失败】";
-                string str1 = Convert.ToString(buff.Last(),16).ToUpper();
-                c += "\r\n原始校验码：" + "\thex：" +str1+"\tbyte："+ buff.Last() ;
-                string str2 = Convert.ToString(check, 16).ToUpper();
-                c += "\r\n实际校验码：" + "\thex：" + str2+"\tbyte：" + check ;
-
+                c += "\r\n获取不到校验位，请检查数据单元长度是否正确";
+                errorSite.Add(22);
+                errorSite.Add(23);
+                errorSite.Add(datalength + 24);
             }
+
             String reHead = "";
             reHead = "---------数据包头---------"+" "+24+"\r\n";
             for (int i = 0; i <= 23; i++) {
-                reHead += b[i]+" ";
+                if (errorSite.Contains(i))
+                {
+                    reHead += "【" + b[i] + "】 ";
+
+                }
+                else
+                {
+                    reHead += b[i] + " ";
+
+                }
+
+               // reHead += b[i]+" ";
+                
             }
-            reStr = reHead +"\r\n"+ reStr;
+
+            String reBCC = ""; 
+            try
+            {
+                reBCC = "---------BCC校验---------" + " " + 1 + "\r\n";
+                if (errorSite.Contains(datalength + 24))
+                {
+                    reBCC += "【" + b[datalength + 24] + "】 ";
+
+                }
+                else
+                {
+                    reBCC += b[datalength + 24] + " ";
+
+                }
+
+
+            }
+            catch {
+                reBCC = "---------BCC校验---------" + " " + 0 + "\r\n";
+            }
+
+            reStr = reHead +"\r\n"+ reStr+reBCC;
             return c + t;
 
         }
@@ -1196,7 +1242,7 @@ namespace Message_analysis_by_Elfran
                                         details = "西经";
                                         break;
                                     case '0':
-                                        details = "西经";
+                                        details = "东经";
                                         break;
                                     default:
                                        details = analysisError(s,null);
@@ -2280,8 +2326,15 @@ namespace Message_analysis_by_Elfran
 
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="len"></param>
+        /// <returns></returns>
 
-
+        
         public byte GetBCC(byte[] buffer, int offset, int len)
         {
             byte value = buffer[offset];
