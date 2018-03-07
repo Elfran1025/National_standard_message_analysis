@@ -210,7 +210,9 @@ namespace Message_analysis_by_Elfran
 
                 for (; s < 20;)
                 {
-                    details += Convert.ToChar(Convert.ToByte(b[++s], 16));
+                    char vinStr=Convert.ToChar(Convert.ToByte(b[++s], 16));
+
+                    details += (vinStr=='\0')?"(空)":vinStr.ToString();
 
                 }
                 c += "\r\n唯一识别码：\t" + details;
@@ -1952,7 +1954,19 @@ namespace Message_analysis_by_Elfran
                     else if (b00 >= 0x0A && b00 <= 0x2F)
                     {
                         h = "平台交换协议自定义数据";
-                        s = b.Count - 1;
+                        int length;
+                        variable = b[++s] + b[++s];
+                        ////variable = variable.ToUpper();
+                        length = Convert.ToInt32(variable, 16);
+                        details = length.ToString();
+
+
+
+                        msg += "\r\n自定义数据长度：\t\t" + details;
+                        s += length;
+
+
+                        //s = b.Count - 1;
                     }
                     else if (b00 >= 0x30 && b00 <= 0x7F)
                     {
@@ -1962,7 +1976,13 @@ namespace Message_analysis_by_Elfran
                     else if (b00 >= 0x80 && b00 <= 0xFE)
                     {
                         h = "终端数据预留";
-                        s = b.Count - 1;
+                        int length;
+                        variable = b[++s] + b[++s];
+                        ////variable = variable.ToUpper();
+                        length = Convert.ToInt32(variable, 16);
+                        details = length.ToString();
+                        msg += "\r\n自定义数据长度：\t\t" + details;
+                        s += length;
                     }
                     else
                     {

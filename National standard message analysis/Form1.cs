@@ -98,21 +98,21 @@ namespace National_standard_message_analysis
             String AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             String version = "V" + AssemblyVersion;
             this.Text += version;
-            if (update())
-            {
+            //if (update())
+            //{
 
 
 
-            }
-            else {
-                this.linkLabel1.Links[0].LinkData = "https://github.com/Elfran1025/National_standard_message_analysis/releases";
+            //}
+            //else {
+            //    this.linkLabel1.Links[0].LinkData = "https://github.com/Elfran1025/National_standard_message_analysis/releases";
                 
-                label4.Text = version;
+            //    label4.Text = version;
                
 
 
 
-            }
+            //}
 
 
 
