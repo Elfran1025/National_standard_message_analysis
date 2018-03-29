@@ -9,6 +9,7 @@ namespace Message_analysis_by_Elfran
     {
         static int datalength = 0;
         static List<int> errorSite = new List<int>();
+        Decimal dec = new Decimal();
         public void Check(string txt, out string sourceText, out string resultText)
         {
             errorSite.Clear();
@@ -243,7 +244,8 @@ namespace Message_analysis_by_Elfran
                 //datalength = Convert.ToInt32(b[++s] + b[++s], 16);
                 ++s;
                 ++s;
-                details = Convert.ToString(datalength);
+
+                details = checkDecThreshold(datalength,0,65531,null);
                 c += "\r\n数据单元长度：\t" + details;
             }
             catch (Exception ex)
@@ -475,8 +477,8 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-
-                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
+                                        dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M;
+                                        details = checkDecThreshold(dec,0,220,null);
                                         break;
 
                                 }
@@ -499,8 +501,9 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-
-                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
+                                        dec = Convert.ToDecimal(Convert.ToUInt32(variable, 16)) * 0.1M;
+                                        details = checkDecThreshold(dec, 0, new Decimal(999999.9),null);
+                                        
                                         break;
 
                                 }
@@ -521,8 +524,9 @@ namespace Message_analysis_by_Elfran
 
 
                                     default:
-
-                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
+                                        dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M;
+                                        details = checkDecThreshold(dec, 0, 1000,null);
+                                       
                                         break;
 
                                 }
@@ -545,7 +549,9 @@ namespace Message_analysis_by_Elfran
 
                                         Decimal d = Convert.ToDecimal(Convert.ToInt32(variable, 16));
                                         //Decimal e = 0.1M;
-                                        details = Convert.ToString(d * 0.1M - 1000);
+                                        dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M-1000;
+                                        details = checkDecThreshold(dec, -1000, 1000,null);
+                                        
                                         break;
 
                                 }
@@ -566,8 +572,9 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16)) + "%";
+                                        dec = Convert.ToDecimal(Convert.ToInt32(variable, 16));
+                                        details = checkDecThreshold(dec, 0, 100,"%");
+                                        
                                         break;
 
                                 }
@@ -657,7 +664,8 @@ namespace Message_analysis_by_Elfran
                                     }
                                 }
                                 msg += "\r\n档位：\t\t" + details;
-                                details = Convert.ToString(Convert.ToInt32(b[++s] + b[++s], 16));
+                                dec = Convert.ToInt32(b[++s] + b[++s], 16);
+                                details = checkDecThreshold(dec,0,60000,null);
                                 msg += "\r\n绝缘电阻：\t" + details;
                                 variable = b[++s];
                                 //variable = variable.ToUpper();
@@ -673,8 +681,9 @@ namespace Message_analysis_by_Elfran
 
 
                                     default:
-
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16)) + "%";
+                                        dec = Convert.ToDecimal(Convert.ToInt32(variable, 16));
+                                        details = checkDecThreshold(dec, 0, 100, "%");
+                                        
                                         break;
 
                                 }
@@ -691,11 +700,18 @@ namespace Message_analysis_by_Elfran
                                     case ("FF"):
                                         details = "无效";
                                         break;
+                                    case ("00"):
+                                        details = "制动关闭";
+                                        break;
+                                    case ("65"):
+                                        details = "制动有效";
+                                        break;
 
 
                                     default:
-
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16)) + "%";
+                                        dec = Convert.ToDecimal(Convert.ToInt32(variable, 16));
+                                        details = checkDecThreshold(dec, 1, 100, "%");
+                                       
                                         break;
 
                                 }
@@ -711,11 +727,12 @@ namespace Message_analysis_by_Elfran
                                 #region 驱动电机数据
 
                                 int b02 = Convert.ToInt32(b[++s], 16);
-                                details = Convert.ToString(b02);
+                                details = checkDecThreshold(b02, 1, 253, null);
                                 msg += "\r\n驱动电机个数：\t\t" + details;
                                 for (int i = 0; i < b02; i++)
                                 {
-                                    details = Convert.ToString(Convert.ToInt32(b[++s], 16));
+                                    dec = Convert.ToInt32(b[++s], 16);
+                                    details = checkDecThreshold(dec, 1, 253, null);
                                     msg += "\r\n驱动电机序号：\t\t" + details;
                                     int b2 = Convert.ToInt32(b[++s], 16);
                                     switch (b2)
@@ -757,8 +774,8 @@ namespace Message_analysis_by_Elfran
 
 
                                         default:
-
-                                            details = Convert.ToString(Convert.ToInt32(variable, 16) - 40);
+                                            dec = Convert.ToInt32(variable, 16) - 40;
+                                            details = checkDecThreshold(dec, -40, 210, null);
 
                                             break;
 
@@ -779,8 +796,9 @@ namespace Message_analysis_by_Elfran
 
 
                                         default:
-
-                                            details = Convert.ToString(Convert.ToInt32(variable, 16) - 20000);
+                                            dec = Convert.ToInt32(variable, 16) - 20000;
+                                            details = checkDecThreshold(dec, -20000, 45531, null);
+                                           
                                             break;
 
                                     }
@@ -800,8 +818,9 @@ namespace Message_analysis_by_Elfran
 
 
                                         default:
-
-                                            details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M - 2000);
+                                            dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M - 2000;
+                                            details = checkDecThreshold(dec, -2000,new Decimal(4553.1), null);
+                                            
                                             break;
 
                                     }
@@ -825,8 +844,9 @@ namespace Message_analysis_by_Elfran
 
 
                                         default:
-
-                                            details = Convert.ToString(Convert.ToInt32(variable, 16) - 40);
+                                            dec = Convert.ToInt32(variable, 16) - 40;
+                                            details = checkDecThreshold(dec, -40, 210, null);
+                                           
                                             break;
 
                                     }
@@ -849,8 +869,9 @@ namespace Message_analysis_by_Elfran
 
                                         default:
 
-
-                                            details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
+                                            dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M;
+                                            details = checkDecThreshold(dec, 0, 60000, null);
+                                            
                                             break;
 
                                     }
@@ -873,9 +894,10 @@ namespace Message_analysis_by_Elfran
 
                                         default:
 
+                                            dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M - 1000;
+                                            details = checkDecThreshold(dec, -1000, 1000, null);
 
-
-                                            details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M - 1000);
+                                          
                                             break;
 
                                     }
@@ -907,9 +929,10 @@ namespace Message_analysis_by_Elfran
 
 
                                     default:
+                                        dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M;
+                                        details = checkDecThreshold(dec, 0, 2000, null);
 
-
-                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
+                                        
                                         break;
 
                                 }
@@ -934,8 +957,9 @@ namespace Message_analysis_by_Elfran
 
 
                                     default:
-
-                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
+                                        dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M;
+                                        details = checkDecThreshold(dec, 0, 2000, null);
+                                       
                                         break;
 
                                 }
@@ -957,8 +981,9 @@ namespace Message_analysis_by_Elfran
 
 
                                     default:
-
-                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.01M);
+                                        dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.01M;
+                                        details = checkDecThreshold(dec, 0, 600, null);
+                                      
                                         break;
 
                                 }
@@ -968,11 +993,13 @@ namespace Message_analysis_by_Elfran
                                 msg += "\r\n燃料消耗率：\t\t" + details;
 
                                 int b03 = Convert.ToInt32(b[++s] + b[++s], 16);
-                                details = Convert.ToString(b03);
+                                details = checkDecThreshold(b03, 0, 65531, null);
                                 msg += "\r\n燃料电池温度探针总数：\t" + details;
                                 for (int i = 0; i < b03; i++)
                                 {
-                                    details = Convert.ToString(Convert.ToInt32(b[++s], 16) - 40);
+                                    dec = Convert.ToInt32(b[++s], 16) - 40;
+                                    details = checkDecThreshold(dec, -40, 200, null);
+                                    
                                     msg += "\r\n探针" + (i + 1) + "温度值：\t\t" + details;
                                 }
 
@@ -990,8 +1017,9 @@ namespace Message_analysis_by_Elfran
 
 
                                     default:
-
-                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M - 40);
+                                        dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M - 40;
+                                        details = checkDecThreshold(dec,-40, 200, null);
+                                        
                                         break;
 
                                 }
@@ -1015,8 +1043,9 @@ namespace Message_analysis_by_Elfran
 
 
                                     default:
-
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                        dec = Convert.ToInt32(variable, 16);
+                                        details = checkDecThreshold(dec, 1, 252, null);
+                                        
                                         break;
 
                                 }
@@ -1040,9 +1069,10 @@ namespace Message_analysis_by_Elfran
 
 
                                     default:
+                                        dec = Convert.ToInt32(variable, 16);
+                                        details = checkDecThreshold(dec, 0, 50000, null);
 
-
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                       
                                         break;
 
                                 }
@@ -1063,8 +1093,9 @@ namespace Message_analysis_by_Elfran
 
 
                                     default:
-
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                        dec = Convert.ToInt32(variable, 16);
+                                        details = checkDecThreshold(dec, 1, 252, null);
+                                      
                                         break;
 
                                 }
@@ -1086,8 +1117,9 @@ namespace Message_analysis_by_Elfran
 
 
                                     default:
-
-                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
+                                        dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M;
+                                        details = checkDecThreshold(dec, 0, 100, null);
+                                        
                                         break;
 
                                 }
@@ -1110,8 +1142,9 @@ namespace Message_analysis_by_Elfran
 
 
                                     default:
-
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                        dec = Convert.ToInt32(variable, 16);
+                                        details = checkDecThreshold(dec, 1, 252, null);
+                                        
                                         break;
 
                                 }
@@ -1178,8 +1211,9 @@ namespace Message_analysis_by_Elfran
 
 
                                     default:
-
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                        dec = Convert.ToInt32(variable, 16);
+                                        details = checkDecThreshold(dec, 0, 60000, null);
+                                        
                                         break;
 
                                 }
@@ -1204,8 +1238,9 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-
-                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.01M);
+                                        dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.01M;
+                                        details = checkDecThreshold(dec, 0, 600, null);
+                                        
                                         break;
 
                                 }
@@ -1292,8 +1327,9 @@ namespace Message_analysis_by_Elfran
 
 
                                     default:
-
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                        dec = Convert.ToInt32(variable, 16);
+                                        details = checkDecThreshold(dec, 1, 250, null);
+                                        
                                         break;
 
                                 }
@@ -1317,7 +1353,8 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                        dec = Convert.ToInt32(variable, 16);
+                                        details = checkDecThreshold(dec, 1, 250, null);
                                         break;
 
                                 }
@@ -1341,8 +1378,9 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-
-                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.001M);
+                                        dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.001M;
+                                        details = checkDecThreshold(dec, 0, 15, null);
+                                        
                                         break;
 
                                 }
@@ -1363,7 +1401,8 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                        dec = Convert.ToInt32(variable, 16);
+                                        details = checkDecThreshold(dec, 1, 250, null);
                                         break;
 
                                 }
@@ -1384,7 +1423,8 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                        dec = Convert.ToInt32(variable, 16);
+                                        details = checkDecThreshold(dec, 1, 250, null);
                                         break;
 
                                 }
@@ -1405,7 +1445,8 @@ namespace Message_analysis_by_Elfran
                                     default:
 
 
-                                        details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.001M);
+                                        dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.001M;
+                                        details = checkDecThreshold(dec, 0, 15, null);
                                         break;
 
                                 }
@@ -1427,7 +1468,8 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                        dec = Convert.ToInt32(variable, 16);
+                                        details = checkDecThreshold(dec, 1, 250, null);
                                         break;
 
                                 }
@@ -1451,7 +1493,8 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                        dec = Convert.ToInt32(variable, 16);
+                                        details = checkDecThreshold(dec, 1, 250, null);
                                         break;
 
                                 }
@@ -1470,8 +1513,9 @@ namespace Message_analysis_by_Elfran
 
 
                                     default:
-
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16) - 40);
+                                        dec = Convert.ToInt32(variable, 16) - 40;
+                                        details = checkDecThreshold(dec, -40, 210, null);
+                                        
                                         break;
 
                                 }
@@ -1492,7 +1536,8 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                        dec = Convert.ToInt32(variable, 16);
+                                        details = checkDecThreshold(dec, 1, 250, null);
                                         break;
 
                                 }
@@ -1512,7 +1557,8 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                        dec = Convert.ToInt32(variable, 16);
+                                        details = checkDecThreshold(dec, 1, 250, null);
                                         break;
 
                                 }
@@ -1532,7 +1578,8 @@ namespace Message_analysis_by_Elfran
 
                                     default:
 
-                                        details = Convert.ToString(Convert.ToInt32(variable, 16) - 40);
+                                        dec = Convert.ToInt32(variable, 16) - 40;
+                                        details = checkDecThreshold(dec, -40, 210, null);
                                         break;
 
                                 }
@@ -1619,7 +1666,7 @@ namespace Message_analysis_by_Elfran
                                 msg += "\r\n车载储能装置类型过充报警：\t" + detail[++j];
                                 //msg += "\r\n位置： " + s;
                                 b07 = Convert.ToInt32(b[++s], 16);
-                                details = Convert.ToString(b07);
+                                details = checkDecThreshold(b07, 0, 252, null);
                                 msg += "\r\n可充电储能装置故障总数：\t" + details;
                                 for (int i = 0; i < b07; i++)
                                 {
@@ -1627,7 +1674,7 @@ namespace Message_analysis_by_Elfran
                                     msg += "\r\n可充电储能装置故障代码列表：\t\t" + details;
                                 }
                                 b07 = Convert.ToInt32(b[++s], 16);
-                                details = Convert.ToString(b07);
+                                details = checkDecThreshold(b07, 0, 252, null);
                                 msg += "\r\n驱动电机故障总数：\t\t" + details;
                                 for (int i = 0; i < b07; i++)
                                 {
@@ -1635,7 +1682,7 @@ namespace Message_analysis_by_Elfran
                                     msg += "\r\n驱动电机故障代码列表：\t\t" + details;
                                 }
                                 b07 = Convert.ToInt32(b[++s], 16);
-                                details = Convert.ToString(b07);
+                                details = checkDecThreshold(b07, 0, 252, null);
                                 msg += "\r\n发动机故障总数：\t\t" + details;
                                 for (int i = 0; i < b07; i++)
                                 {
@@ -1643,7 +1690,7 @@ namespace Message_analysis_by_Elfran
                                     msg += "\r\n发动机故障代码列表：\t\t" + details;
                                 }
                                 b07 = Convert.ToInt32(b[++s], 16);
-                                details = Convert.ToString(b07);
+                                details = checkDecThreshold(b07, 0, 252, null);
                                 msg += "\r\n其他故障总数：\t\t" + details;
                                 for (int i = 0; i < b07; i++)
                                 {
@@ -1675,7 +1722,8 @@ namespace Message_analysis_by_Elfran
                                     details = "无效";
                                 }
                                 else {
-                                    details = Convert.ToString(b08);
+                                   
+                                    details = checkDecThreshold(b08, 1, 250, null);
                                 }
                                 msg += "\r\n可充电储能子系统个数：\t" + details;
                                 if (b08 > 253) {
@@ -1689,7 +1737,8 @@ namespace Message_analysis_by_Elfran
                                     {
                                         try
                                         {
-                                            details = Convert.ToString(Convert.ToInt32(b[++s], 16));
+                                            dec = Convert.ToInt32(b[++s], 16);
+                                            details = checkDecThreshold(dec, 1, 250, null);
                                             msg += "\r\n可充电储能子系统号：\t" + details;
 
                                             variable = b[++s] + b[++s];
@@ -1706,8 +1755,9 @@ namespace Message_analysis_by_Elfran
 
 
                                                 default:
-
-                                                    details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M);
+                                                    dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M;
+                                                    details = checkDecThreshold(dec, 0, 1000, null);
+                                                   
                                                     break;
 
                                             }
@@ -1730,8 +1780,9 @@ namespace Message_analysis_by_Elfran
 
 
                                                 default:
-
-                                                    details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M - 1000);
+                                                    dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M - 1000;
+                                                    details = checkDecThreshold(dec, -1000, 1000, null);
+                                                    
                                                     break;
 
                                             }
@@ -1752,8 +1803,9 @@ namespace Message_analysis_by_Elfran
 
 
                                                 default:
-
-                                                    details = Convert.ToString(Convert.ToInt32(variable, 16));
+                                                    dec = Convert.ToInt32(variable, 16);
+                                                    details = checkDecThreshold(dec, 1, 65531, null);
+                                                  
                                                     break;
 
                                             }
@@ -1761,11 +1813,11 @@ namespace Message_analysis_by_Elfran
                                             msg += "\r\n单体电池总数：\t\t" + details;
 
                                             int b801 = Convert.ToInt32(b[++s] + b[++s], 16);
-                                            details = Convert.ToString(b801);
+                                            details = checkDecThreshold(b801, 1, 65531, null);
                                             msg += "\r\n本帧起始电池序号：\t\t" + details;
 
                                             int b8 = Convert.ToInt32(b[++s], 16);
-                                            details = Convert.ToString(b8);
+                                            details = checkDecThreshold(b8, 1, 200, null);
                                             msg += "\r\n本帧单体电池总数：\t\t" + details;
                                             msg += "\r\n";
                                             num = "";
@@ -1789,8 +1841,9 @@ namespace Message_analysis_by_Elfran
 
 
                                                         default:
-
-                                                            details = Convert.ToString(Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.001M).PadRight(5, '0');
+                                                            dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.001M;
+                                                            details = checkDecThreshold(dec, 0, 60, null).PadRight(5, '0'); ;
+                                                           
                                                             break;
 
                                                     }
@@ -1848,7 +1901,9 @@ namespace Message_analysis_by_Elfran
                                 }
                                 else
                                 {
-                                    details = Convert.ToString(b09);
+                                    
+                                    details = checkDecThreshold(b09, 1, 250, null);
+                                    
                                 }
 
 
@@ -1867,11 +1922,14 @@ namespace Message_analysis_by_Elfran
                                     for (int i = 0; i < b09; i++)
                                     {
                                         try {
-                                            details = Convert.ToString(Convert.ToInt32(b[++s], 16));
+                                            dec = Convert.ToInt32(b[++s], 16);
+                                            details = checkDecThreshold(dec, 1, 250, null);
+                                            
                                             msg += "\r\n可充电储能子系统号：\t" + details;
 
                                             int b9 = Convert.ToInt32(b[++s] + b[++s], 16);
-                                            details = Convert.ToString(b9);
+                                            details = checkDecThreshold(b9, 1, 65531, null);
+
                                             msg += "\r\n可充电储能温度探针个数：\t" + details;
                                             msg += "\r\n";
                                             msg += "\t\t         单体温度\r\n";
@@ -1893,8 +1951,9 @@ namespace Message_analysis_by_Elfran
 
 
                                                         default:
-
-                                                            details = Convert.ToString(Convert.ToInt32(variable, 16) - 40);
+                                                            dec = Convert.ToInt32(variable, 16) - 40;
+                                                            details = checkDecThreshold(dec, -40, 210, null);
+                                                            ;
                                                             break;
 
                                                     }
@@ -1942,7 +2001,7 @@ namespace Message_analysis_by_Elfran
 
 
                             default:
-                                h = "解析错误";
+                                h = "【解析错误】";
                                 msg += "\r\n位置： " + s;
                                 s = b.Count - 1;
                                 break;
@@ -1986,7 +2045,7 @@ namespace Message_analysis_by_Elfran
                     }
                     else
                     {
-                        h = "解析错误";
+                        h = "【解析错误】";
 
                         msg += "\r\n位置： " + s;
                         s = b.Count - 1;
@@ -2111,8 +2170,8 @@ namespace Message_analysis_by_Elfran
 
                 details = getTime(b);
                 t += "\r\n数据采集时间：\t" + details;
-
-                details = Convert.ToString(Convert.ToInt32(b[++s] + b[++s], 16));
+                dec = Convert.ToInt32(b[++s] + b[++s], 16);
+                details = checkDecThreshold(dec, 0, 65531,null);
                 t += "\r\n登入流水号：\t" + details;
                 details = "";
                 for (int i = 0; i < 20; i++)
@@ -2121,10 +2180,11 @@ namespace Message_analysis_by_Elfran
                 }
                 t += "\r\nICCID：\t\t" + details;
                 int n = Convert.ToInt32(b[++s], 16);
-                details = Convert.ToString(n);
+
+                details = checkDecThreshold(n, 0, 250,null);
                 t += "\r\n可充电储能子系统数：\t" + details;
                 int m = Convert.ToInt32(b[++s], 16);
-                details = Convert.ToString(m);
+                details = checkDecThreshold(m,0,50,null);
                 t += "\r\n可充电储能系统编码长度：\t" + details;
                 details = "";
                 for (int i = 0; i < m * n; i++)
@@ -2174,8 +2234,9 @@ namespace Message_analysis_by_Elfran
             {
                 details = getTime(b);
                 t += "\r\n数据采集时间：\t" + details;
-
-                details = Convert.ToString(Convert.ToInt32(b[++s] + b[++s], 16));
+                dec = Convert.ToInt32(b[++s] + b[++s], 16);
+                details = checkDecThreshold(dec, 0, 65531, null);
+                
                 t += "\r\n登出流水号：\t" + details;
 
             }
@@ -2223,7 +2284,8 @@ namespace Message_analysis_by_Elfran
                 details = getTime(b);
                 t += "\r\n数据采集时间：\t" + details;
 
-                details = Convert.ToString(Convert.ToInt32(b[++s] + b[++s], 16));
+                dec = Convert.ToInt32(b[++s] + b[++s], 16);
+                details = checkDecThreshold(dec, 0, 65531, null);
                 t += "\r\n登入流水号：\t" + details;
                 details = "";
                 for (int i = 0; i < 12; i++)
@@ -2366,10 +2428,37 @@ namespace Message_analysis_by_Elfran
         }
         public string analysisError(int s,String detail) {
 
-            String str = "解析错误 "+detail;
+            String str = "【解析错误】 "+detail;
             str+= "\r\n位置： " + s;
             errorSite.Add(s);
             return str;
         }
+
+        public string checkIntThreshold(int value, int min, int max) {
+           String detail= Convert.ToString(value);
+            if (value < min || value > max) {
+
+                detail += "【超出阈值】";
+
+            }
+            return detail;
+        }
+        public String checkDecThreshold(Decimal value, Decimal min, Decimal max,String unit ) {
+            String detail = Convert.ToString(value)+unit;
+            if (value < min || value > max)
+            {
+
+                detail += "【超出阈值】";
+
+            }
+            return detail;
+
+        }
+
+
+
     }
+
+
+
 }
