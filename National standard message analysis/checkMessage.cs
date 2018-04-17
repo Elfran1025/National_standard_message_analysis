@@ -164,6 +164,7 @@ namespace Message_analysis_by_Elfran
                         break;
                     case 0x08:
                         details = "终端校时";
+                        t = Timing(b);
                         break;
                     default:
                         details = analysisError(s,null);
@@ -870,7 +871,7 @@ namespace Message_analysis_by_Elfran
                                         default:
 
                                             dec = Convert.ToDecimal(Convert.ToInt32(variable, 16)) * 0.1M;
-                                            details = checkDecThreshold(dec, 0, 60000, null);
+                                            details = checkDecThreshold(dec, 0, 6000, null);
                                             
                                             break;
 
@@ -2403,6 +2404,28 @@ namespace Message_analysis_by_Elfran
 
             }
 
+            return t;
+        }
+
+
+        public String Timing(List<String> b) {
+            String t = "";
+            String details = "";
+            try {
+
+
+                if (datalength > 0) {
+                    details = getTime(b);
+                    t += "\r\n数据采集时间：\t" + details;
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+
+            }
             return t;
         }
 
